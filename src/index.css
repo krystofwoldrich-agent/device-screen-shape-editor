@@ -1,0 +1,424 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #1e1e1e;
+  --panel: #2c2c2c;
+  --panel-2: #383838;
+  --border: #444;
+  --text: #e6e6e6;
+  --muted: #9a9a9a;
+  --accent: #0d99ff;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  color: var(--text);
+  background: var(--bg);
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body.scrubbing,
+body.scrubbing * {
+  cursor: ew-resize !important;
+  user-select: none;
+}
+
+body.panning .canvas svg {
+  cursor: grab;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 220px 1fr 300px;
+  grid-template-rows: 44px 1fr;
+  height: 100%;
+}
+
+button {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 4px 9px;
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+button:hover:not(:disabled) {
+  border-color: #666;
+}
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+button.active,
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+button.danger:hover {
+  border-color: #f24822;
+  color: #ff8a70;
+}
+
+input {
+  font: inherit;
+  color: var(--text);
+}
+
+.toolbar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 10px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+.toolbar .group {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.app-title {
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.toolbar .spacer {
+  flex: 1;
+}
+.zoom-label {
+  min-width: 52px;
+}
+
+.check {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.check input {
+  accent-color: var(--accent);
+}
+
+.layers,
+.props {
+  background: var(--panel);
+  overflow-y: auto;
+}
+.layers {
+  border-right: 1px solid var(--border);
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+.layers h3 {
+  padding: 0 12px;
+}
+.layers ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+.layers li {
+  display: flex;
+  gap: 8px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+.layers li:hover {
+  background: var(--panel-2);
+}
+.layers li.selected {
+  background: rgba(13, 153, 255, 0.25);
+}
+.layers .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.layers .hint {
+  padding: 0 12px;
+}
+.help {
+  color: var(--muted);
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  line-height: 1.7;
+}
+.help b {
+  color: var(--text);
+}
+
+h3 {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.hint {
+  color: var(--muted);
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+
+.props {
+  border-left: 1px solid var(--border);
+}
+.section {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.row-label {
+  color: var(--muted);
+  margin-top: 2px;
+}
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.name-input {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-weight: 600;
+  font-size: 13px;
+}
+.name-input:hover,
+.name-input:focus {
+  border-color: var(--border);
+  outline: none;
+}
+
+.num {
+  display: flex;
+  align-items: center;
+  background: var(--panel-2);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  min-width: 0;
+}
+.num:focus-within {
+  border-color: var(--accent);
+}
+.num-label {
+  color: var(--muted);
+  padding: 0 6px 0 7px;
+  cursor: ew-resize;
+  user-select: none;
+  white-space: nowrap;
+}
+.num input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 5px 6px 5px 0;
+}
+
+.slider-field {
+  display: grid;
+  grid-template-columns: 1fr 118px;
+  gap: 8px;
+  align-items: center;
+}
+.slider-field input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.corner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.color-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.color-row input[type='color'] {
+  width: 28px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+}
+.color-row .hex {
+  width: 80px;
+  background: var(--panel-2);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 5px 6px;
+  outline: none;
+}
+.color-row .hex:focus {
+  border-color: var(--accent);
+}
+.color-row .num {
+  flex: 1;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+  background: #1a1a1a;
+  color: #cfe3ff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 8px;
+  font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre;
+}
+
+/* ---------- canvas ---------- */
+.canvas {
+  position: relative;
+  overflow: hidden;
+  background-color: #e5e5e5;
+  background-image: radial-gradient(#c7c7c7 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+.canvas.drag-over {
+  outline: 3px dashed var(--accent);
+  outline-offset: -3px;
+}
+.canvas svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  touch-action: none;
+}
+.canvas.tool-rect svg {
+  cursor: crosshair;
+}
+.shape {
+  cursor: move;
+}
+.tool-rect .shape {
+  cursor: crosshair;
+}
+
+.overlay .outline {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+.overlay .handle {
+  fill: white;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+.handle-nw,
+.handle-se {
+  cursor: nwse-resize;
+}
+.handle-ne,
+.handle-sw {
+  cursor: nesw-resize;
+}
+.handle-n,
+.handle-s {
+  cursor: ns-resize;
+}
+.handle-e,
+.handle-w {
+  cursor: ew-resize;
+}
+.overlay .bezier {
+  pointer-events: none;
+}
+.overlay .bezier line {
+  stroke: #f24e1e;
+  stroke-width: 1;
+}
+.overlay .bezier circle {
+  fill: #f24e1e;
+}
+.overlay .bezier .anchor {
+  fill: white;
+  stroke: #f24e1e;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.overlay .size-label {
+  fill: white;
+  paint-order: stroke;
+  stroke: var(--accent);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  text-anchor: middle;
+  pointer-events: none;
+  font-family: inherit;
+}
+
+.toast {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.segmented {
+  display: flex;
+}
+.segmented button {
+  flex: 1;
+  border-radius: 0;
+}
+.segmented button:first-child {
+  border-radius: 5px 0 0 5px;
+}
+.segmented button:last-child {
+  border-radius: 0 5px 5px 0;
+}
+.segmented button + button {
+  border-left: none;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.section-head h3 {
+  margin: 0;
+}
