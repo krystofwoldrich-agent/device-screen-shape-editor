@@ -2,6 +2,12 @@
 
 A small local web app to draw rectangles with smooth corners, match them to device screens, and copy the result as SVG.
 
+![The Device corners page with the iPhone 17 screen shape selected. The panel shows its superellipse corner: n 2.6, 77.92 px.](docs/device-corners-iphone-17.png)
+
+Close-up of the top-left corner at 900%. The superellipse is drawn as cubic segments; the red points and lines are their anchors and handles, on top of the bezel PNG.
+
+![Close-up of the iPhone 17 top-left screen corner with the curve handles.](docs/device-corners-iphone-17-corner.png)
+
 ## Features
 
 - **Rectangles with two corner types**
